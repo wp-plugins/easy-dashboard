@@ -5,7 +5,7 @@ Plugin URI: http://wpgov.it
 Description: Refresh your WordPress dashboard with this new elegant, metro-based one.
 Author: Marco Milesi
 Author URI: http://marcomilesi.ml
-Version: 0.2
+Version: 1.0
 License: GPL version 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 */
 
