@@ -5,7 +5,7 @@ Plugin URI: http://wpgov.it
 Description: Refresh your WordPress dashboard with this new elegant, metro-based one.
 Author: Marco Milesi
 Author URI: http://marcomilesi.ml
-Version: 1.0
+Version: 1.1
 License: GPL version 2 or later - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 */
 
@@ -39,7 +39,7 @@ function easy_dashboard_render() {
         min-height: inherit!important;
     }
     .wp-box {
-        width: 150px;
+        width: 155px;
         height: 150px;
         margin: 5px;
         float:left;
@@ -80,8 +80,7 @@ function easy_dashboard_render() {
         <h1>';
     printf(  __( 'Howdy, %1$s' ), $name );
     echo '!</h1>
-        <div class="about-text">Welcome to Your dashboard.</div>
-        <hr>
+        <div class="about-text">'.esc_attr( get_option('ed_tagline') ).'</div>
     ';
 
     global $menu;//print_r($menu);
@@ -104,6 +103,25 @@ function easy_dashboard_render() {
             echo '<span>' . $menuitem[0] . '</span>';
             echo '</div></a>';
         }
+    }
+    if ( current_user_can( 'manage_options' ) ) {
+        echo '<div class="clear"></div><br><br>
+        <details>
+          <summary>Settings <small>(only admins can see this)</small></summary>
+          <form method="post" action="options.php">';
+        settings_fields( 'easy-dashboard-options' );
+        do_settings_sections( 'easy-dashboard-options' );
+        echo '
+         <table class="form-table">
+            <tr valign="top">
+            <th scope="row">Dashboard TagLine</th>
+            <td><input type="text" name="ed_tagline" value="'. esc_attr( get_option('ed_tagline') ). '" /></td>
+            </tr>
+         </table>';
+        submit_button();
+        echo '
+          </form>
+        </details>';
     }
 
 }
@@ -142,4 +160,10 @@ function dahsboarder_get_posttype($slug) {
 
     }
 }
+
+
+function ed_register_mysettings() {
+  register_setting( 'easy-dashboard-options', 'ed_tagline' );
+}
+add_action( 'admin_init', 'ed_register_mysettings' );
 ?>
